@@ -1,10 +1,10 @@
 
-![Logo](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/th5xamgrr6se0x5ro4g6.png)
+![Logo](https://github.com/Yousran/timetuner/blob/main/Doc/LogoWide.png)
 
 
-# Living Regularly
+# Time Tuner
 
-“Living regularly” merupakan sebuah aplikasi yang mengatur segala jadwal yang dimiliki sang pengguna, serta dilengkapi dengan fitur pencarian jadwal, jadi apabila sang pengguna ingin mengecek jadwal yang dimiliki, maka cukup dengan membuka aplikasi maka jadwal untuk hari dan jam pada saat itu akan muncul.
+“Time Tuner” merupakan sebuah aplikasi yang mengatur segala jadwal yang dimiliki sang pengguna, serta dilengkapi dengan fitur pencarian jadwal, jadi apabila sang pengguna ingin mengecek jadwal yang dimiliki, maka cukup dengan membuka aplikasi maka jadwal untuk hari dan jam pada saat itu akan muncul.
 
 
 ## Screenshots
