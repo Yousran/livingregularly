@@ -24,11 +24,5 @@ Install my-project with npm
 ## Authors
 
 - [A.M.Yusran Mazidan](https://www.github.com/yousranmz)
-- [M. Ervin](https://www.github.com/yousranmz)
-- [Nur Wahida](https://www.github.com/yousranmz)
-
-
-## License
-
-[MIT](https://choosealicense.com/licenses/mit/)
-
+- [M. Ervin](https://www.github.com/ervin1809)
+- [Nur Wahida](https://www.github.com/nurwahida1090)
