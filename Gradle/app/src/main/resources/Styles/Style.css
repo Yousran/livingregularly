@@ -1,0 +1,32 @@
+.root{
+    -fx-background-color: #6AB5CF;
+}
+
+.btnLogin {
+    -fx-background-color: #0087B6;
+}
+
+.btnRegis {
+    -fx-background-color: #7BE84D;
+}
+.btn{
+    -fx-font-family: "Open Sans";
+    -fx-font-weight: bold;
+    -fx-pref-height: 28px;
+    -fx-background-radius: 50px;
+    -fx-text-fill: white;
+}
+
+.container{
+    -fx-background-radius: 30px;
+    -fx-background-color: #ffffff;
+}
+.inputan {
+    -fx-background-color: #A6A6A6;
+    -fx-prompt-text-fill: #737373;
+    -fx-font-weight: bold;
+    -fx-font-family: "Open Sans";
+    -fx-min-height: 40;
+    -fx-min-width: 300;
+    -fx-background-radius: 35px;
+}
