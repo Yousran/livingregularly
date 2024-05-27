@@ -5,6 +5,7 @@ import java.io.File;
 import org.checkerframework.checker.units.qual.degrees;
 
 import gradle.controllers.UserLogin;
+import gradle.models.User;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -88,10 +89,19 @@ public class LoginScene {
         loginBtn.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                //TODO: Hubungkan ke UserLogin.dfsfd
+                String email1 = email.getText();
+                String password = pass.getText();
 
-                DashboardScene dashboardScene = new DashboardScene(stage);
-                dashboardScene.show();
+                boolean hasil = UserLogin.validasiLogin(email1, password);
+
+                if (hasil) {
+                    User user = UserLogin.getUser(email1, password);
+                    DashboardScene dashboardScene = new DashboardScene(stage);
+                    dashboardScene.show();
+                } else {
+                    //TODO SANDI SALAH
+                }
+
             }
         });
         signupBtn.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
