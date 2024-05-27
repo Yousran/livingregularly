@@ -6,6 +6,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -16,14 +17,18 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class RegisterScene {
-    public void show(Stage primaryStage){
+    Stage stage;
+    public RegisterScene(Stage stage){
+        this.stage = stage;
+    }
+    public void show(){
         TextField username = new TextField();
         username.getStyleClass().addAll("inputan");
         username.setPromptText("username");
         TextField email = new TextField();
         email.getStyleClass().addAll("inputan");
         email.setPromptText("Email");
-        TextField pass = new TextField();
+        PasswordField pass = new PasswordField();
         pass.getStyleClass().addAll("inputan");
         pass.setPromptText("Password");
 
@@ -53,8 +58,8 @@ public class RegisterScene {
         containerBtn.setPadding(new Insets(0, 5, 0, 5));
         
 
-        containerLogin.maxWidthProperty().bind(primaryStage.widthProperty().multiply(0.3));
-        containerLogin.maxHeightProperty().bind(primaryStage.heightProperty().multiply(0.5));
+        containerLogin.maxWidthProperty().bind(stage.widthProperty().multiply(0.3));
+        containerLogin.maxHeightProperty().bind(stage.heightProperty().multiply(0.5));
         // containerLogin.getStyleClass().add("-fx-background-color:black");
         
 
@@ -73,8 +78,8 @@ public class RegisterScene {
         // Menyetel scene dan stage
         Scene scene = new Scene(root, 1024, 720);
         scene.getStylesheets().add(getClass().getResource("/Styles/Style.css").toExternalForm());
-        primaryStage.setTitle("SignUp Page");
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        stage.setTitle("SignUp Page");
+        stage.setScene(scene);
+        stage.show();
     }
 }

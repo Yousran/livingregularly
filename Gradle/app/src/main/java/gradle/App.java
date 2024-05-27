@@ -20,10 +20,11 @@ import javafx.stage.Stage;
 public class App extends Application {
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
-        LoginScene loginScene = new LoginScene();
+    public void start(Stage stage) throws Exception {
+        stage.setResizable(true);
+        LoginScene loginScene = new LoginScene(stage);
         // loginScene.show(primaryStage);
-        loginScene.show(primaryStage);
+        loginScene.show();
     }
 
     public static void main(String[] args) {
