@@ -30,3 +30,10 @@
     -fx-min-width: 300;
     -fx-background-radius: 35px;
 }
+
+.navbar{
+    -fx-background-color: #0087B6;
+}
+.sidebar{
+    -fx-background-color: #6AB5CF;
+}

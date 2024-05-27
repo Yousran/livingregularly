@@ -20,11 +20,9 @@ public class DashboardScene {
         VBox sidebar = new VBox();
         VBox content = new VBox();
 
-        // Mengatur warna menggunakan setStyle
-        navbar.setStyle("-fx-background-color: #333333;"); // Dark gray
-        sidebar.setStyle("-fx-background-color: #CCCCCC;"); // Light gray
-        content.setStyle("-fx-background-color: #FFFFFF;"); // White
-        body.setStyle("-fx-background-color: black;");
+        navbar.getStyleClass().add("navbar");
+        sidebar.getStyleClass().add("sidebar");
+        content.setStyle("-fx-background-color: #FFFFFF;");
 
         main.getChildren().addAll(sidebar, content);
         body.getChildren().addAll(navbar, main);
@@ -35,16 +33,16 @@ public class DashboardScene {
 
         Scene scene = new Scene(root, 1024, 720);
         stage.setTitle("Dashboard Page");
+        scene.getStylesheets().add(getClass().getResource("/Styles/Style.css").toExternalForm());
         stage.setScene(scene);
         stage.show();
 
-        // Mengatur ukuran komponen berdasarkan persentase
+        navbar.prefHeightProperty().bind(scene.heightProperty().multiply(0.1));
+        main.prefHeightProperty().bind(scene.heightProperty().multiply(0.9));
+        
         navbar.prefWidthProperty().bind(scene.widthProperty());
-        navbar.prefHeightProperty().bind(scene.heightProperty().multiply(0.1)); // 10% dari tinggi scene
-
-        sidebar.prefWidthProperty().bind(scene.widthProperty().multiply(0.2)); // 20% dari lebar scene
+        sidebar.prefWidthProperty().bind(scene.widthProperty().multiply(0.2));
         content.prefWidthProperty().bind(scene.widthProperty().multiply(0.8));
 
-        main.prefHeightProperty().bind(scene.heightProperty().multiply(0.9)); // 90% dari tinggi scene
     }
 }
