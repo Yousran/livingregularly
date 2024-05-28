@@ -5,8 +5,7 @@ public class Anggaran extends Model {
     private int harga;
     private int projek_id;
 
-    public Anggaran(int user_id, int projek_id, String item, int harga){
-        super(user_id);
+    public Anggaran(int projek_id, String item, int harga){
         this.item = item;
         this.harga = harga;
         this.projek_id = projek_id;
