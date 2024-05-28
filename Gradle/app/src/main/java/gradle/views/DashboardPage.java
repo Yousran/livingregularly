@@ -32,16 +32,16 @@ public class DashboardPage extends VBox{
         HBox subTitle = new HBox(imageView,label);
         
         VBox cardContainer = new VBox(10);
-        cardContainer.setStyle("-fx-background-color: rgba(0,0,0,0)");
 
         for (Proyek projek : ProyekCtrl.getAllProjek(UserId)) {
             cardContainer.getChildren().add(new ProjectCard(projek));
         }        
-        ScrollPane scrollPane = new ScrollPane(cardContainer);
-        scrollPane.setStyle("-fx-background-color: rgba(0,0,0,0)");
-        scrollPane.setFitToWidth(true);
+        //TODO : saat scrollpane ditambahkan maka warna scrollpane tersebut tidak bisa diubah.sehingga tampilan kurang baik
+        // ScrollPane scrollPane = new ScrollPane(cardContainer);
+        // scrollPane.getStyleClass().add("scroll-pane");
+        // scrollPane.setFitToWidth(true);
         
-        projectList.getChildren().addAll(subTitle,scrollPane);
+        projectList.getChildren().addAll(subTitle,cardContainer);
         return projectList;
     }
 

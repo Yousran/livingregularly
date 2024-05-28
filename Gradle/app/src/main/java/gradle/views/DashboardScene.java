@@ -10,12 +10,12 @@ import javafx.stage.Stage;
 
 public class DashboardScene {
     Stage stage;
-    VBox content;
+    public static VBox content;
     private int UserId;
     
     public DashboardScene(Stage stage) {
         this.stage = stage;
-        this.content = new VBox();
+        content = new VBox();
     }
     public void show(int UserId) {
         this.UserId = UserId;
@@ -58,7 +58,9 @@ public class DashboardScene {
                 content.getChildren().add(new Label("Modify settings here"));
                 break;
             case "Logout":
-                content.getChildren().add(new Label("You are logged out"));
+                UserId = 0;
+                LoginScene loginScene = new LoginScene(stage);
+                loginScene.show();;
                 break;
         }
     }
