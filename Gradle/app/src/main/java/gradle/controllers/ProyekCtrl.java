@@ -31,18 +31,22 @@ public class ProyekCtrl extends DbConnect {
             getConnection();
             preparedStatement = connection.prepareStatement(query);
             resultSet = preparedStatement.executeQuery();
+            if (!resultSet.isBeforeFirst()) {
+                System.out.println("No data found in the database.");
+            }
             while (resultSet.next()) {
-                int userId = resultSet.getInt("user_id");
                 int projekId = resultSet.getInt("projek_id");
+                int userId = resultSet.getInt("user_id");
                 String namaProjek = resultSet.getString("nama_projek");
-                String myTeam = resultSet.getString("team");
                 String tanggal = resultSet.getString("tanggal");
+                String myTeam = resultSet.getString("team");
                 int pengeluaran = resultSet.getInt("anggaran");
-                // Fill the book
-                Proyek proyek = new Proyek(userId, projekId, namaProjek, myTeam, tanggal, pengeluaran);
+                System.out.println("Project found: " + resultSet.getString("nama_projek"));
+                Proyek proyek = new Proyek(projekId, userId, namaProjek, tanggal, myTeam, pengeluaran);
                 proyeks.add(proyek);
             }
         } catch (Exception e) {
+            System.out.println("Error fetching projects: " + e.getMessage());
             e.printStackTrace();
         }
         return proyeks;

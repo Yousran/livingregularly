@@ -1,48 +1,63 @@
 package gradle.views;
 
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.geometry.Pos;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class DashboardScene {
     Stage stage;
-    public DashboardScene(Stage stage){
+    VBox content;
+    
+    public DashboardScene(Stage stage) {
         this.stage = stage;
+        this.content = new VBox();
     }
     public void show() {
         VBox body = new VBox();
-        HBox navbar = new HBox();
+        NavbarComponent navbar = new NavbarComponent();
         HBox main = new HBox();
-        VBox sidebar = new VBox();
-        VBox content = new VBox();
-
-        navbar.getStyleClass().add("navbar");
-        sidebar.getStyleClass().add("sidebar");
-        content.setStyle("-fx-background-color: #FFFFFF;");
-
-        main.getChildren().addAll(sidebar, content);
-        body.getChildren().addAll(navbar, main);
-
+        SidebarComponent sidebar = new SidebarComponent(this);
+        
         StackPane root = new StackPane();
         root.getChildren().add(body);
         StackPane.setAlignment(body, Pos.CENTER);
-
+        
         Scene scene = new Scene(root, 1024, 720);
-        stage.setTitle("Dashboard Page");
+        navbar.bindToParent(scene);
+        sidebar.bindToParent(scene);
+        content.getStyleClass().add("content");
+        content.prefWidthProperty().bind(scene.widthProperty().multiply(0.8));
+        
+        main.getChildren().addAll(sidebar, content);
+        body.getChildren().addAll(navbar, main);
+
         scene.getStylesheets().add(getClass().getResource("/Styles/Style.css").toExternalForm());
+        stage.setTitle("Dashboard Page");
         stage.setScene(scene);
         stage.show();
-
-        navbar.prefHeightProperty().bind(scene.heightProperty().multiply(0.1));
-        main.prefHeightProperty().bind(scene.heightProperty().multiply(0.9));
-        
-        navbar.prefWidthProperty().bind(scene.widthProperty());
-        sidebar.prefWidthProperty().bind(scene.widthProperty().multiply(0.2));
-        content.prefWidthProperty().bind(scene.widthProperty().multiply(0.8));
-
     }
+
+    public void updateContent(String page) {
+        content.getChildren().clear();
+        
+        switch (page) {
+            case "Dashboard":
+                content.getChildren().add(new DashboardPage());
+                break;
+            case "Add New Project":
+                content.getChildren().add(new Label("Add a new project here"));
+                break;
+            case "Settings":
+                content.getChildren().add(new Label("Modify settings here"));
+                break;
+            case "Logout":
+                content.getChildren().add(new Label("You are logged out"));
+                break;
+        }
+    }
+
 }

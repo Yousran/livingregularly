@@ -1,11 +1,28 @@
 .root{
-    -fx-background-color: #6AB5CF;
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #5bc5e9,#1d6780);
 }
 
+.h1{
+    -fx-font-family: "Open Sans";
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-font-size: 2em;
+}
+.h2{
+    -fx-font-family: "Open Sans";
+    -fx-font-weight: bold;
+    -fx-text-fill: black;
+    -fx-font-size: 2em;
+}
+.subTitle{
+    -fx-font-family: "Open Sans";
+    -fx-font-weight: bold;
+    -fx-text-fill: black;
+    -fx-font-size: 1.5em;
+}
 .btnLogin {
     -fx-background-color: #0087B6;
 }
-
 .btnRegis {
     -fx-background-color: #7BE84D;
 }
@@ -24,16 +41,43 @@
 .inputan {
     -fx-background-color: #A6A6A6;
     -fx-prompt-text-fill: #737373;
-    -fx-font-weight: bold;
-    -fx-font-family: "Open Sans";
+    -fx-text-fill: #494848;
+    /* -fx-font-weight: bold; */
+    -fx-font-size: 16px;
     -fx-min-height: 40;
     -fx-min-width: 300;
     -fx-background-radius: 35px;
+    -fx-effect: dropshadow( gaussian , #000000d8 , 0,-5,0,0);
 }
 
 .navbar{
     -fx-background-color: #0087B6;
 }
+
 .sidebar{
     -fx-background-color: #6AB5CF;
+}
+.sidebar-btn {
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-text-fill: black;
+    -fx-alignment: center-left;
+    -fx-padding: 5 10 5 10;;
+    -fx-background-radius: 0px;
+}
+.sidebar-btn:hover {
+    -fx-background-color: rgba(254, 254, 254, 0.5);
+    -fx-text-fill: black;
+}
+.sidebar-btn.active {
+    -fx-text-fill: black;
+    -fx-background-color: white;
+}
+.content{
+    -fx-background-color: white;
+    -fx-padding: 1em;
+}
+.cardProjek{
+    -fx-background-color: #D9D9D9;
+    -fx-text-fill: black;
+    -fx-background-radius: 5px;
 }

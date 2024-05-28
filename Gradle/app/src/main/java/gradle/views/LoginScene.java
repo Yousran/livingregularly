@@ -119,6 +119,5 @@ public class LoginScene {
         stage.setScene(scene);
         stage.show();
     }
-
     
 }

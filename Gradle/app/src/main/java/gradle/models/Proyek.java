@@ -5,14 +5,14 @@ public class Proyek extends Model {
     private String myTeam;
     private String tanggal;
     private String namaProjek;
-    private int pengluaran;
+    private int pengeluaran;
 
-    public Proyek(int user_id, int projekId, String namaProjek, String myTeam, String tanggal, int pengluaran) {
+    public Proyek(int projekId, int user_id, String namaProjek, String tanggal, String myTeam, int pengeluaran) {
         super(user_id);
         this.projekId = projekId;
         this.namaProjek = namaProjek;
         this.myTeam = myTeam;
-        this.pengluaran = pengluaran;
+        this.pengeluaran = pengeluaran;
         this.tanggal = tanggal;
     }
 
@@ -48,12 +48,12 @@ public class Proyek extends Model {
         this.myTeam = myTeam;
     }
 
-    public int getPengluaran() {
-        return pengluaran;
+    public int getPengeluaran() {
+        return pengeluaran;
     }
-
-    public void setPengluaran(int pengluaran) {
-        this.pengluaran = pengluaran;
+    
+    public void setPengeluaran(int pengeluaran) {
+        this.pengeluaran = pengeluaran;
     }
 
 }
