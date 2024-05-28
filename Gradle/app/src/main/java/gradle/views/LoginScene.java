@@ -99,7 +99,20 @@ public class LoginScene {
                     DashboardScene dashboardScene = new DashboardScene(stage);
                     dashboardScene.show();
                 } else {
-                    //TODO SANDI SALAH
+                    email.getStyleClass().add("inputanFailed");
+                    email.setText("");
+                    email.setPromptText("Email Salah !!");
+                    
+                    pass.getStyleClass().add("inputanFailed");
+                    pass.setText("");
+                    pass.setPromptText("Password Salah !!");
+                    
+                    email.setOnKeyTyped(Action->{
+                        email.getStyleClass().remove("inputanFailed");
+                    });
+                    pass.setOnKeyTyped(Action->{
+                        pass.getStyleClass().remove("inputanFailed");
+                    });
                 }
 
             }

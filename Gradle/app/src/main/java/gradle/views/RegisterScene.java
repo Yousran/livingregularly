@@ -79,13 +79,47 @@ public class RegisterScene {
                 String email1 = email.getText();
                 String password = pass.getText();
 
-                boolean hasil = UserRegis.registerUser(name, email1, password);
+                if (name.isEmpty() || email1.isEmpty() || password.isEmpty()) {
+                    username.getStyleClass().add("inputanFailed");
+                    username.setPromptText("Wajib Di Isi !!");
 
-                if (hasil) {
-                    LoginScene loginScene = new LoginScene(stage);
-                    loginScene.show();
+                    email.getStyleClass().add("inputanFailed");
+                    email.setPromptText("Wajib Di Isi !!");
+
+                    pass.getStyleClass().add("inputanFailed");
+                    pass.setPromptText("Wajib Di Isi !!");
+
+                    email.setOnKeyTyped(Action->{
+                        email.getStyleClass().remove("inputanFailed");
+                    });
+                    pass.setOnKeyTyped(Action->{
+                        pass.getStyleClass().remove("inputanFailed");
+                    });
+                    username.setOnKeyTyped(Action->{
+                        username.getStyleClass().remove("inputanFailed");
+                    });
+
                 } else {
-                    // TODO MASIH KURANG
+                    if (email1.matches("^[\\w.+\\-]+@gmail\\.com$")) {
+                        boolean cekEmail = UserRegis.cekEmail(email1);
+                        if (cekEmail) {
+                            email.getStyleClass().add("inputanFailed");
+                            email.setText("");
+                            email.setPromptText("Email Telah Terdaftar !!");
+                        } else {
+                            boolean hasil = UserRegis.registerUser(name, email1, password);
+                            if (hasil) {
+                                LoginScene loginScene = new LoginScene(stage);
+                                loginScene.show();
+                            }
+                        }
+
+                    }else {
+                        email.getStyleClass().add("inputanFailed");
+                        email.setText("");
+                        email.setPromptText("Gunakan Email !!");
+                    }
+
                 }
             }
         });

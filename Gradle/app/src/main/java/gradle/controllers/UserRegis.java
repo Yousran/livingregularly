@@ -1,5 +1,6 @@
 package gradle.controllers;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import gradle.config.DbConnect;
@@ -17,6 +18,21 @@ public class UserRegis extends DbConnect {
 
             preparedStatement.executeUpdate();
             return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+        public static boolean cekEmail(String email){
+        getConnection();
+        query = "SELECT email FROM user WHERE email=?";
+        try {
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, email);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                boolean valid = resultSet.next();
+                return valid;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
