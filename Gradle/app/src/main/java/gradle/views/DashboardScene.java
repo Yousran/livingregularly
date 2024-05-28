@@ -11,12 +11,15 @@ import javafx.stage.Stage;
 public class DashboardScene {
     Stage stage;
     VBox content;
+    private int UserId;
     
     public DashboardScene(Stage stage) {
         this.stage = stage;
         this.content = new VBox();
     }
-    public void show() {
+    public void show(int UserId) {
+        this.UserId = UserId;
+
         VBox body = new VBox();
         NavbarComponent navbar = new NavbarComponent();
         HBox main = new HBox();
@@ -46,7 +49,7 @@ public class DashboardScene {
         
         switch (page) {
             case "Dashboard":
-                content.getChildren().add(new DashboardPage());
+                content.getChildren().add(new DashboardPage(UserId));
                 break;
             case "Add New Project":
                 content.getChildren().add(new Label("Add a new project here"));

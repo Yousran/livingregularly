@@ -97,7 +97,7 @@ public class LoginScene {
                 if (hasil) {
                     User user = UserLogin.getUser(email1, password);
                     DashboardScene dashboardScene = new DashboardScene(stage);
-                    dashboardScene.show();
+                    dashboardScene.show(user.getId());
                 } else {
                     email.getStyleClass().add("inputanFailed");
                     email.setText("");

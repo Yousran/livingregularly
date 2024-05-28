@@ -10,16 +10,16 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class DashboardPage extends VBox{
-    public DashboardPage(){
+    public DashboardPage(int UserId){
         super();
 
         Label title = new Label("Dashboard");
         title.getStyleClass().setAll("h2");
 
-        this.getChildren().addAll(title,projectList());
+        this.getChildren().addAll(title,projectList(UserId));
     }
 
-    public VBox projectList(){
+    public VBox projectList(int UserId){
         VBox projectList = new VBox();
         Label label = new Label("Project List");
 
@@ -34,7 +34,7 @@ public class DashboardPage extends VBox{
         VBox cardContainer = new VBox(10);
         cardContainer.setStyle("-fx-background-color: rgba(0,0,0,0)");
 
-        for (Proyek projek : ProyekCtrl.getAllProjek()) {
+        for (Proyek projek : ProyekCtrl.getAllProjek(UserId)) {
             cardContainer.getChildren().add(new ProjectCard(projek));
         }        
         ScrollPane scrollPane = new ScrollPane(cardContainer);

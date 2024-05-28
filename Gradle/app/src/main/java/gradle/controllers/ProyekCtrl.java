@@ -24,12 +24,13 @@ public class ProyekCtrl extends DbConnect {
         return false;
     }
 
-    public static List<Proyek> getAllProjek() {
+    public static List<Proyek> getAllProjek(int UserId) {
         List<Proyek> proyeks = new ArrayList<>();
-        query = "SELECT * FROM projek";
+        query = "SELECT * FROM projek WHERE user_id=?";
         try {
             getConnection();
             preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, UserId);
             resultSet = preparedStatement.executeQuery();
             if (!resultSet.isBeforeFirst()) {
                 System.out.println("No data found in the database.");
