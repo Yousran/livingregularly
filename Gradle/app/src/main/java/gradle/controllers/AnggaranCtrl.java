@@ -1,7 +1,8 @@
 package gradle.controllers;
 
 import java.sql.ResultSet;
-
+import java.util.ArrayList;
+import java.util.List;
 import gradle.config.DbConnect;
 import gradle.models.Anggaran;
 
@@ -22,7 +23,8 @@ public class AnggaranCtrl extends DbConnect {
         return false;
     }
 
-    public static Anggaran getAnggaran(int projek_id) {
+    public static List<Anggaran> getAllAnggaran(int projek_id) {
+        List<Anggaran> anggarans = new ArrayList<>();
         query = "SELECT FROM anggaran WHERE projek_id=?";
         try {
             getConnection();
@@ -34,13 +36,14 @@ public class AnggaranCtrl extends DbConnect {
                     String item = resultSet.getString("item");
                     int harga = resultSet.getInt("harga");
                     Anggaran anggaran = new Anggaran(projekId, item, harga);
-                    return anggaran;
+                    anggarans.add(anggaran);
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return anggarans;
 
-        return null;
+
     }
 }
