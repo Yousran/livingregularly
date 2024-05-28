@@ -15,6 +15,18 @@
     -fx-text-fill: black;
     -fx-font-size: 2em;
 }
+.h3 {
+    -fx-font-family: "Open Sans";
+    -fx-font-weight: bold;
+    -fx-text-fill: black;
+    -fx-font-size: 1.5em;
+}
+.h4 {
+    -fx-font-family: "Open Sans";
+    -fx-font-weight: bold;
+    -fx-text-fill: black;
+    -fx-font-size: 1em;
+}
 
 .subTitle {
     -fx-font-family: "Open Sans";
@@ -55,7 +67,7 @@
 }
 
 .container {
-    -fx-background-radius: 30px;
+    -fx-background-radius: 3em;
     -fx-background-color: #ffffff;
 }
 
@@ -96,6 +108,16 @@
 .sidebar-btn.active {
     -fx-text-fill: black;
     -fx-background-color: white;
+}
+
+.icon-btn {
+    -fx-opacity: 0.5;
+    -fx-background-color: rgba(0, 0, 0, 0);
+    -fx-background-radius: 0px;
+}
+.icon-btn:hover {
+    -fx-opacity: 1;
+    -fx-background-radius: 0px;
 }
 
 .scroll-pane {

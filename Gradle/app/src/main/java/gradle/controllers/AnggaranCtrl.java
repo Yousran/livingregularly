@@ -16,6 +16,7 @@ public class AnggaranCtrl extends DbConnect {
             preparedStatement.setInt(1, projekId);
             preparedStatement.setString(2, item);
             preparedStatement.setInt(3, harga);
+            preparedStatement.executeUpdate();
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -25,7 +26,7 @@ public class AnggaranCtrl extends DbConnect {
 
     public static List<Anggaran> getAllAnggaran(int projek_id) {
         List<Anggaran> anggarans = new ArrayList<>();
-        query = "SELECT FROM anggaran WHERE projek_id=?";
+        query = "SELECT * FROM anggaran WHERE projek_id=?";
         try {
             getConnection();
             preparedStatement = connection.prepareStatement(query);

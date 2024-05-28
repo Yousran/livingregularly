@@ -31,4 +31,5 @@ public class ProjectCard extends Button{
             DashboardScene.content.getChildren().add(new ProjectPane(projek));
         });
     }
+    //TODO : buatkan mini card sehingga card dapat memiliki banyak versii
 }

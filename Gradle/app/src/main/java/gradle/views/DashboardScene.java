@@ -60,7 +60,7 @@ public class DashboardScene {
             case "Logout":
                 UserId = 0;
                 LoginScene loginScene = new LoginScene(stage);
-                loginScene.show();;
+                loginScene.show();
                 break;
         }
     }
