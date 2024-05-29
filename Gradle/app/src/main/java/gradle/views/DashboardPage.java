@@ -36,7 +36,7 @@ public class DashboardPage extends VBox{
         for (Proyek projek : ProyekCtrl.getAllProjek(UserId)) {
             cardContainer.getChildren().add(new ProjectCard(projek));
         }        
-        //TODO : saat scrollpane ditambahkan maka warna scrollpane tersebut tidak bisa diubah.sehingga tampilan kurang baik
+        //TODO : saat scrollpane ditambahkan maka warna scrollpane tersebut tidak bisa diubah.sehingga tampilan kurang baiks
         // ScrollPane scrollPane = new ScrollPane(cardContainer);
         // scrollPane.getStyleClass().add("scroll-pane");
         // scrollPane.setFitToWidth(true);

@@ -52,7 +52,7 @@ public class DashboardScene {
                 content.getChildren().add(new DashboardPage(UserId));
                 break;
             case "Add New Project":
-                content.getChildren().add(new Label("Add a new project here"));
+                content.getChildren().add(new AddProjectPage());
                 break;
             case "Settings":
                 content.getChildren().add(new Label("Modify settings here"));

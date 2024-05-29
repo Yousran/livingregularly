@@ -83,7 +83,7 @@ public class BudgetCard extends VBox {
                 if (success) {
                     itemField.clear();
                     priceField.clear();
-                    displayBudgetItems(); // Refresh the display
+                    displayBudgetItems();
                 } else {
                     System.out.println("Failed to add budget item.");
                 }
