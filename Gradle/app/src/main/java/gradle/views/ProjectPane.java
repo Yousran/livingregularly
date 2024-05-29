@@ -21,6 +21,7 @@ public class ProjectPane extends VBox{
         Label title = new Label(proyek.getNamaProjek());
         title.getStyleClass().setAll("h2");
         // this.getStyleClass().setAll("btnLogin");
+        this.setStyle("-fx-spacing : 2em");
         this.getChildren().addAll(title,projectDetail(proyek));
     }
 
@@ -32,6 +33,9 @@ public class ProjectPane extends VBox{
         VBox detail = new VBox();
 
         detail.setStyle("-fx-spacing: 2em;");
+        projectCard.getStyleClass().add("CardPane1");
+        budgetCard.getStyleClass().add("CardPane1");
+        teamCard.getStyleClass().add("CardPane1");
         detail.getChildren().addAll(projectCard,budgetCard);
 
 

@@ -1,19 +1,23 @@
 .root {
-    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #5bc5e9, #1d6780);
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #5bc5e9, #12566c);
 }
 
 .h1 {
-    -fx-font-family: "Open Sans";
+    -fx-font-family: "Helvetica";
     -fx-font-weight: bold;
     -fx-text-fill: white;
     -fx-font-size: 2em;
 }
 
 .h2 {
-    -fx-font-family: "Open Sans";
+    -fx-font-family: "Helvetica";
     -fx-font-weight: bold;
     -fx-text-fill: black;
     -fx-font-size: 2em;
+    -fx-pref-width: 810;
+    -fx-border-color: rgb(0, 0, 0);
+    -fx-border-width: 0 0 1px 0;
+
 }
 .h3 {
     -fx-font-family: "Open Sans";
@@ -25,7 +29,7 @@
     -fx-font-family: "Open Sans";
     -fx-font-weight: bold;
     -fx-text-fill: black;
-    -fx-font-size: 1em;
+    -fx-font-size: 1.1em;
 }
 
 .subTitle {
@@ -37,6 +41,7 @@
 
 .btnLogin {
     -fx-background-color: #0087B6;
+    -fx-effect: dropshadow(gaussian, rgba(2, 46, 72, 0.824), 10, 0.5, 2, 2);
 }
 
 .btnLogin:hover {
@@ -48,6 +53,7 @@
 
 .btnRegis {
     -fx-background-color: #7BE84D;
+    -fx-effect: dropshadow(gaussian, rgba(2, 46, 72, 0.824), 10, 0.5, 2, 2);
 }
 
 .btnRegis:hover {
@@ -69,6 +75,7 @@
 .container {
     -fx-background-radius: 3em;
     -fx-background-color: #ffffff;
+    -fx-effect: dropshadow(gaussian, rgba(2, 46, 72, 0.824), 10, 0.5, 2, 2);
 }
 
 .inputan {
@@ -137,6 +144,16 @@
     -fx-background-radius: 3em;
     -fx-padding: 1em;
 }
+.cardProjek:hover {
+    -fx-background-color: #D9D9D9;
+    -fx-text-fill: black;
+    -fx-pref-height: 5em;
+    -fx-background-radius: 3em;
+    -fx-border-radius: 3em;
+    -fx-border-color: #00d5ff;
+    -fx-border-width: 0.2em;
+    -fx-padding: 1em;
+}
 
 .card-content {
     -fx-spacing: 5em;
@@ -159,4 +176,25 @@
     -fx-min-width: 300;
     -fx-background-radius: 35px;
     /* -fx-effect: dropshadow( gaussian , #000000d8 , 0, -5 , 0 , 0 ); */
+}
+
+.CardPane1{
+    -fx-spacing: 2em;
+    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.75), 10, 0.5, 2, 2);;
+}
+
+.CardProjek{
+    -fx-background-color: #D9D9D9;
+    -fx-text-fill: black;
+    -fx-pref-height: 5em;
+    -fx-background-radius: 3em;
+    -fx-padding: 1em;
+    -fx-spacing: 2em;
+    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.75), 10, 0.5, 2, 2);;
+}
+
+.Item{
+    -fx-border-color: rgb(0, 0, 0);
+    -fx-border-width: 0 0 1px 0;
+
 }

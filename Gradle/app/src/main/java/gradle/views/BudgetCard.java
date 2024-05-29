@@ -51,7 +51,7 @@ public class BudgetCard extends VBox {
 
         for (Anggaran anggaran : anggarans) {
             Label itemLabel = new Label(anggaran.getItem() + " : Rp. " + anggaran.getHarga());
-            itemLabel.getStyleClass().addAll("btnLogin", "h4");
+            itemLabel.getStyleClass().addAll("Item", "h4");
             budgetItems.getChildren().add(itemLabel);
             totalSpent += anggaran.getHarga();
         }

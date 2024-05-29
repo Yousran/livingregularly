@@ -15,6 +15,7 @@ public class DashboardPage extends VBox{
 
         Label title = new Label("Dashboard");
         title.getStyleClass().setAll("h2");
+        this.setStyle("-fx-spacing : 1.2em");
 
         this.getChildren().addAll(title,projectList(UserId));
     }
@@ -42,6 +43,7 @@ public class DashboardPage extends VBox{
         // scrollPane.setFitToWidth(true);
         
         projectList.getChildren().addAll(subTitle,cardContainer);
+        projectList.setStyle("-fx-spacing : 1.5em");
         return projectList;
     }
 
