@@ -7,8 +7,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
 public class NavbarComponent extends HBox {
-    public NavbarComponent() {
+    protected String nama;
+    
+    public NavbarComponent(String nama) {
         super();
+        this.nama = nama;
         this.getStyleClass().add("navbar");
         this.getChildren().addAll(profilPict(),labelUsername());
     }
@@ -27,7 +30,7 @@ public class NavbarComponent extends HBox {
     }
 
     private Label labelUsername(){
-        Label label = new Label("Hello, "+"Username"); 
+        Label label = new Label("Hello, "+ nama); 
         label.getStyleClass().add("h1");
         label.prefHeightProperty().bind(this.heightProperty());
         return label; 

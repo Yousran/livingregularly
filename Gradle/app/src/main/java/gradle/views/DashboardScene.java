@@ -17,11 +17,11 @@ public class DashboardScene {
         this.stage = stage;
         content = new VBox();
     }
-    public void show(int UserId) {
+    public void show(int UserId, String nama) {
         this.UserId = UserId;
 
         VBox body = new VBox();
-        NavbarComponent navbar = new NavbarComponent();
+        NavbarComponent navbar = new NavbarComponent(nama);
         HBox main = new HBox();
         SidebarComponent sidebar = new SidebarComponent(this);
         

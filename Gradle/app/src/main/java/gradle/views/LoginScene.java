@@ -5,6 +5,7 @@ import java.io.File;
 import org.checkerframework.checker.units.qual.degrees;
 
 import gradle.controllers.UserLogin;
+import gradle.controllers.UserRegis;
 import gradle.models.User;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -92,28 +93,64 @@ public class LoginScene {
                 String email1 = email.getText();
                 String password = pass.getText();
 
-                boolean hasil = UserLogin.validasiLogin(email1, password);
-
-                if (hasil) {
-                    User user = UserLogin.getUser(email1, password);
-                    DashboardScene dashboardScene = new DashboardScene(stage);
-                    dashboardScene.show(user.getId());
-                } else {
+                if (email.getText().isEmpty() || pass.getText().isEmpty()) {
                     email.getStyleClass().add("inputanFailed");
-                    email.setText("");
-                    email.setPromptText("Email Salah !!");
-                    
+                    email.setPromptText("Isi!!");
+
                     pass.getStyleClass().add("inputanFailed");
-                    pass.setText("");
-                    pass.setPromptText("Password Salah !!");
-                    
-                    email.setOnKeyTyped(Action->{
+                    pass.setPromptText("Isi!!");
+
+                    email.setOnKeyTyped(Action -> {
                         email.getStyleClass().remove("inputanFailed");
                     });
-                    pass.setOnKeyTyped(Action->{
+                    pass.setOnKeyTyped(Action -> {
                         pass.getStyleClass().remove("inputanFailed");
                     });
+                }else {
+                    boolean emal = UserRegis.cekEmail(email1);
+                    if (emal) {
+                        boolean hasil = UserLogin.validasiLogin(email1, password);
+    
+                        if (hasil) {
+                            User user = UserLogin.getUser(email1, password);
+                            System.out.println(user.getNama());
+                            DashboardScene dashboardScene = new DashboardScene(stage);
+                            dashboardScene.show(user.getId(), user.getNama());
+                        } else {
+                            email.getStyleClass().add("inputanFailed");
+                            email.setText("");
+                            email.setPromptText("Email Salah !!");
+    
+                            pass.getStyleClass().add("inputanFailed");
+                            pass.setText("");
+                            pass.setPromptText("Password Salah !!");
+    
+                            email.setOnKeyTyped(Action -> {
+                                email.getStyleClass().remove("inputanFailed");
+                            });
+                            pass.setOnKeyTyped(Action -> {
+                                pass.getStyleClass().remove("inputanFailed");
+                            });
+                        }
+                    } else {
+                        email.getStyleClass().add("inputanFailed");
+                        email.setText("");
+                        email.setPromptText("Email Tidak Terdaftar!!");
+    
+                        pass.getStyleClass().add("inputanFailed");
+    
+                        email.setOnKeyTyped(Action -> {
+                            email.getStyleClass().remove("inputanFailed");
+                        });
+                        pass.setOnKeyTyped(Action -> {
+                            pass.getStyleClass().remove("inputanFailed");
+                        });
+    
+                    }
+
                 }
+
+                
 
             }
         });
