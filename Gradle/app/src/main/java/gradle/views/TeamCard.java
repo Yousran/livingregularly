@@ -15,7 +15,7 @@ public class TeamCard extends VBox {
     public TeamCard(Proyek projek) {
         this.getStyleClass().add("cardProjek");
 
-        Label teamNameLabel = new Label(projek.getMyTeam());
+        Label teamNameLabel = new Label(projek.getNamaProjek());
         teamNameLabel.getStyleClass().add("h3");
         this.getChildren().add(teamNameLabel);
 

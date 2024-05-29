@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import gradle.controllers.ProyekCtrl;
+import gradle.controllers.TeamCtrl;
 import gradle.models.Anggaran;
 import gradle.models.Proyek;
 import gradle.models.User;
@@ -19,21 +21,42 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
 public class AddProjectPage extends VBox {
-    public AddProjectPage(){
+    private TextField nameField;
+    private DatePicker datePicker;
+    private TextField timeField;
+    private TextField budgetField;
+
+    private ArrayList<String> teamNames = new ArrayList<>();
+
+    public AddProjectPage(int userId) {
         super();
 
         HBox titleHBox = new HBox();
         Button btnSave = new Button("save");
 
+        btnSave.setOnAction(event -> {
+            String name = nameField.getText();
+            String tanggal = String.valueOf(datePicker.getValue());
+            String waktu = timeField.getText();
+            int anggaran = Integer.valueOf(budgetField.getText());
+
+            int projectId = ProyekCtrl.addProjek(name, tanggal, userId, anggaran);
+            // System.out.println(projectId);
+
+            for (String teamName : teamNames) {
+                TeamCtrl.addTeam(teamName, projectId);
+            }
+            
+        });
+
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
-
 
         Label title = new Label("Add Projek Baru");
         title.getStyleClass().setAll("h2");
         titleHBox.getChildren().addAll(title, spacer, btnSave);
 
-        this.getChildren().addAll(titleHBox,projectDetail());
+        this.getChildren().addAll(titleHBox, projectDetail());
     }
 
     public HBox projectDetail() {
@@ -42,36 +65,37 @@ public class AddProjectPage extends VBox {
         VBox budgetCard = createBudgetCard();
         VBox teamCard = createTeamCard();
         VBox detail = new VBox();
-    
+
         detail.setStyle("-fx-spacing: 2em;");
         detail.getChildren().addAll(projectCard, budgetCard);
-    
+
         projectDetail.setStyle("-fx-spacing: 2em;");
-    
+
         detail.prefWidthProperty().bind(projectDetail.widthProperty().multiply(0.8));
         teamCard.prefWidthProperty().bind(projectDetail.widthProperty().multiply(0.2));
         projectDetail.getChildren().addAll(detail, teamCard);
-        
+
         return projectDetail;
     }
-    
+
     private HBox createProjectCard() {
         HBox projectCard = new HBox(10);
         projectCard.getStyleClass().add("cardProjek");
 
-        TextField nameField = new TextField();
+        nameField = new TextField();
         nameField.setPromptText("Nama Proyek");
-        DatePicker datePicker = new DatePicker();
+        datePicker = new DatePicker();
         datePicker.setPromptText("Tanggal");
-        TextField timeField = new TextField();
+        timeField = new TextField();
         timeField.setPromptText("Waktu");
-        TextField budgetField = new TextField();
+        budgetField = new TextField();
         budgetField.setPromptText("Anggaran");
 
         projectCard.getChildren().addAll(nameField, datePicker, timeField, budgetField);
 
         return projectCard;
     }
+
     private TextField itemField = new TextField();
     private TextField priceField = new TextField();
     private TextField totalBudgetField = new TextField();
@@ -85,7 +109,7 @@ public class AddProjectPage extends VBox {
         HBox header = new HBox();
         totalBudgetField.setPromptText("Budget");
         header.getChildren().add(totalBudgetField);
-        
+
         HBox inputFields = new HBox(5);
         Button addBtn = addBudgetBtn();
         inputFields.getChildren().addAll(addBtn, itemField, priceField);
@@ -97,6 +121,7 @@ public class AddProjectPage extends VBox {
         displayBudgetItems();
         return budgetCard;
     }
+
     private void displayBudgetItems() {
         budgetItems.getChildren().clear();
         int totalSpent = 0;
@@ -144,7 +169,7 @@ public class AddProjectPage extends VBox {
     private TextField teamNameField = new TextField();
     private List<String> teamMembers = new ArrayList<>();
     private VBox teamMembersContainer = new VBox(4);
-    
+
     private VBox createTeamCard() {
         VBox teamCard = new VBox(10);
         teamCard.getStyleClass().add("cardProjek");
@@ -187,9 +212,9 @@ public class AddProjectPage extends VBox {
 
         Label memberLabel = new Label(memberName);
         memberLabel.getStyleClass().add("h4");
-//
+        //
         memberCard.getChildren().addAll(profileImageView, memberLabel);
         return memberCard;
     }
-    
+
 }

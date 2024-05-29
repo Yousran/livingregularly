@@ -15,12 +15,13 @@ public class ProjectCard extends Button{
         Label nameLabel = new Label(projek.getNamaProjek());
         nameLabel.getStyleClass().add("name-label");
 
-        Label teamLabel = new Label("Team: " + projek.getMyTeam());
+        // Label teamLabel = new Label("Team: " + projek.getMyTeam());
         Label dateLabel = new Label("Date: " + projek.getTanggal());
         Label timeLabel = new Label("Time: " + projek.getTanggal());
         Label budgetLabel = new Label("Budget: Rp. " + projek.getPengeluaran());
         
-        cardContent.getChildren().addAll(nameLabel, teamLabel, dateLabel, timeLabel, budgetLabel);
+        // cardContent.getChildren().addAll(nameLabel, teamLabel, dateLabel, timeLabel, budgetLabel);
+        cardContent.getChildren().addAll(nameLabel, dateLabel, timeLabel, budgetLabel);
         this.setGraphic(cardContent);
         
         this.getStyleClass().addAll("cardProjek");

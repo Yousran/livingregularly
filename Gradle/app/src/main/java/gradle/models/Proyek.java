@@ -2,16 +2,14 @@ package gradle.models;
 
 public class Proyek extends Model {
     private int projekId;
-    private String myTeam;
     private String tanggal;
     private String namaProjek;
     private int pengeluaran;
 
-    public Proyek(int projekId, int user_id, String namaProjek, String tanggal, String myTeam, int pengeluaran) {
+    public Proyek(int projekId, int user_id, String namaProjek, String tanggal, int pengeluaran) {
         super(user_id);
         this.projekId = projekId;
         this.namaProjek = namaProjek;
-        this.myTeam = myTeam;
         this.pengeluaran = pengeluaran;
         this.tanggal = tanggal;
     }
@@ -38,14 +36,6 @@ public class Proyek extends Model {
 
     public void setTanggal(String tanggal) {
         this.tanggal = tanggal;
-    }
-
-    public String getMyTeam() {
-        return myTeam;
-    }
-
-    public void setMyTeam(String myTeam) {
-        this.myTeam = myTeam;
     }
 
     public int getPengeluaran() {

@@ -4,25 +4,51 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.sql.Statement;
+
 import gradle.config.DbConnect;
 import gradle.models.Proyek;
 
 public class ProyekCtrl extends DbConnect {
-    public static boolean addProjek(String namaProjek, String tanggal, int userId) {
-        query = "INSERT INTO projek (nama_projek, tanggal, user_id) VALUES (?, ?, ?)";
+    // public static boolean addProjek(String namaProjek, String tanggal, int userId,int anggaran) {
+    //     query = "INSERT INTO projek (nama_projek, tanggal, user_id, anggaran) VALUES (?, ?, ?, ?)";
+    //     try {
+    //         getConnection();
+    //         preparedStatement = connection.prepareStatement(query);
+    //         preparedStatement.setString(1, namaProjek);
+    //         preparedStatement.setString(2, tanggal);
+    //         preparedStatement.setInt(3, userId);
+    //         preparedStatement.setInt(4, anggaran);
+    //         preparedStatement.executeUpdate();
+    //         return true;
+    //     } catch (Exception e) {
+    //         e.printStackTrace();
+    //     }
+    //     return false;
+    // }
+
+    public static int addProjek(String namaProjek, String tanggal, int userId, int anggaran) {
+        String query = "INSERT INTO projek (nama_projek, tanggal, user_id, anggaran) VALUES (?, ?, ?, ?)";
+        int projekId = 0;
         try {
             getConnection();
-            preparedStatement = connection.prepareStatement(query);
+            preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, namaProjek);
             preparedStatement.setString(2, tanggal);
             preparedStatement.setInt(3, userId);
+            preparedStatement.setInt(4, anggaran);
             preparedStatement.executeUpdate();
-            return true;
+
+            ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                projekId = generatedKeys.getInt(1);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return false;
+        return projekId;
     }
+    
 
     public static List<Proyek> getAllProjek(int UserId) {
         List<Proyek> proyeks = new ArrayList<>();
@@ -40,10 +66,9 @@ public class ProyekCtrl extends DbConnect {
                 int userId = resultSet.getInt("user_id");
                 String namaProjek = resultSet.getString("nama_projek");
                 String tanggal = resultSet.getString("tanggal");
-                String myTeam = resultSet.getString("team");
                 int pengeluaran = resultSet.getInt("anggaran");
                 System.out.println("Project found: " + resultSet.getString("nama_projek"));
-                Proyek proyek = new Proyek(projekId, userId, namaProjek, tanggal, myTeam, pengeluaran);
+                Proyek proyek = new Proyek(projekId, userId, namaProjek, tanggal, pengeluaran);
                 proyeks.add(proyek);
             }
         } catch (Exception e) {
@@ -65,10 +90,9 @@ public class ProyekCtrl extends DbConnect {
                     int userId = resultSet.getInt("user_id");
                     int projekId = resultSet.getInt("projek_id");
                     String namaProjek = resultSet.getString("nama_projek");
-                    String myTeam = resultSet.getString("team");
                     String tanggal = resultSet.getString("tanggal");
                     int pengeluaran = resultSet.getInt("anggaran");
-                    Proyek proyek = new Proyek(userId, projekId, namaProjek, myTeam, tanggal, pengeluaran);
+                    Proyek proyek = new Proyek(userId, projekId, namaProjek, tanggal, pengeluaran);
                     return proyek;
                 }
             }

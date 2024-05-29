@@ -9,14 +9,13 @@ import gradle.models.User;
 
 public class TeamCtrl extends DbConnect {
 
-    public static boolean addTeam(String nama, int userId, int projekId) {
-        String query = "INSERT INTO team (user_id, projek_id ,nama) VALUES (? , ?, ?)";
+    public static boolean addTeam(String nama, int projekId) {
+        String query = "INSERT INTO team (projek_id ,nama) VALUES (?, ?)";
         try {
             getConnection();
             preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1, userId);
-            preparedStatement.setInt(2, projekId);
-            preparedStatement.setString(3, nama);
+            preparedStatement.setInt(1, projekId);
+            preparedStatement.setString(2, nama);
             preparedStatement.executeUpdate();
             return true;
         } catch (Exception e) {
