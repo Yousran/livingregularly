@@ -196,6 +196,7 @@ public class PageAddProject extends VBox implements InterfacePageProject  {
 
         for (Budget budget : budgets) {
             Label budgetLabel = new Label(budget.getBudget_name() + " : " + SelfUtils.intToRupiah(budget.getPrice()));
+            budgetLabel.getStyleClass().add("h5-thin");
             budgetListVBox.getChildren().add(budgetLabel);
         }
         return budgetListVBox;

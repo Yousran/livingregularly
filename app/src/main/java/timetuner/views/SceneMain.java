@@ -2,8 +2,6 @@ package timetuner.views;
 
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -14,7 +12,7 @@ public class SceneMain {
     private Stage primaryStage;
     private double screenWidth;
     private double screenHeight;
-    private Scene scene;
+    public Scene scene;
     public static VBox content;
 
     public SceneMain(Stage primaryStage, double screenWidth, double screenHeight) {
@@ -57,22 +55,7 @@ public class SceneMain {
                 content.getChildren().add(new PageAddProject());
                 break;
             case "Settings":
-                VBox settingsContainer = new VBox();
-                Label settingsLabel = new Label("Modify settings here");
-
-                CheckBox darkModeToggle = new CheckBox("Dark Mode");
-                darkModeToggle.setSelected(App.style.equals("/styles/styles-dark.css"));
-                darkModeToggle.setOnAction(event -> {
-                    if (darkModeToggle.isSelected()) {
-                        App.style = "/styles/styles-dark.css";
-                    } else {
-                        App.style = "/styles/styles.css";
-                    }
-                    reloadStyle();
-                });
-
-                settingsContainer.getChildren().addAll(settingsLabel, darkModeToggle);
-                content.getChildren().add(settingsContainer);
+                content.getChildren().add(new PageSettings(this));
                 break;
             case "Logout":
                 App.loggedUser = null;
@@ -80,13 +63,5 @@ public class SceneMain {
                 loginScene.show();
                 break;
         }
-    }
-    private void reloadStyle() {
-        scene.getStylesheets().clear();
-    
-        String stylePath = getClass().getResource(App.style).toExternalForm();
-        scene.getStylesheets().add(stylePath);
-    
-        updatePage("Settings");
     }
 }
