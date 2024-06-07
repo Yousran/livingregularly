@@ -7,6 +7,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.text.NumberFormat;
 import java.util.Locale;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 public class SelfUtils {
     
@@ -35,5 +37,12 @@ public class SelfUtils {
         String formattedNumber = formatter.format(number);
         
         return "Rp. " + formattedNumber;
+    }
+
+    public static boolean isValidEmail(String email) {
+        String emailPattern = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
+        Pattern pattern = Pattern.compile(emailPattern);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
     }
 }

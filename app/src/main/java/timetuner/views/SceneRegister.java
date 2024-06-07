@@ -9,6 +9,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import timetuner.App;
+import timetuner.SelfUtils;
 import timetuner.controllers.UserController;
 
 public class SceneRegister {
@@ -111,6 +112,14 @@ public class SceneRegister {
             emailField.setOnKeyTyped(event -> emailField.getStyleClass().remove("error"));
             passwordField.setOnKeyTyped(event -> passwordField.getStyleClass().remove("error"));
             confirmPasswordField.setOnKeyTyped(event -> confirmPasswordField.getStyleClass().remove("error"));
+            return;
+        }
+
+        if (!SelfUtils.isValidEmail(emailField.getText())) {
+            emailField.clear();
+            emailField.getStyleClass().add("error");
+            emailField.setPromptText("Invalid email format");
+            emailField.setOnKeyTyped(event -> emailField.getStyleClass().remove("error"));
             return;
         }
     

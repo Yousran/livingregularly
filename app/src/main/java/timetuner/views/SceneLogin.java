@@ -3,12 +3,14 @@ package timetuner.views;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import timetuner.App;
+import timetuner.SelfUtils;
 import timetuner.controllers.UserController;
 
 public class SceneLogin {
@@ -16,7 +18,7 @@ public class SceneLogin {
     private StackPane root;
     private Scene scene;
     private TextField emailField;
-    private TextField passwordField;
+    private PasswordField passwordField;
     private double screenWidth;
     private double screenHeight;
 
@@ -34,7 +36,7 @@ public class SceneLogin {
         emailField.setPromptText("Enter your email");
         emailField.getStyleClass().add("text-field");
     
-        passwordField = new TextField();
+        passwordField = new PasswordField();
         passwordField.setPromptText("Enter your password");
         passwordField.getStyleClass().add("text-field");
     
@@ -84,21 +86,38 @@ public class SceneLogin {
             passwordField.setOnKeyTyped(event -> passwordField.getStyleClass().remove("error"));
             return;
         }
+
+        if (!SelfUtils.isValidEmail(emailField.getText())) {
+            emailField.clear();
+            emailField.getStyleClass().add("error");
+            emailField.setPromptText("Invalid email format");
+            emailField.setOnKeyTyped(event -> emailField.getStyleClass().remove("error"));
+            return;
+        }
     
         boolean loginSuccess = UserController.login(emailField.getText(), passwordField.getText());
-        if (!loginSuccess) {
+        if (UserController.cekEmail(emailField.getText())) {
+            if (!loginSuccess) {
+                // emailField.getStyleClass().add("error");
+                passwordField.getStyleClass().add("error");
+                // emailField.clear();
+                passwordField.clear();
+                // emailField.setPromptText("Login failed, try again");
+                passwordField.setPromptText("Wrong Password, try again");
+            } else {
+                System.out.println(App.loggedUser.getUsername() + " Berhasil Login");
+                emailField.clear();
+                passwordField.clear();
+                SceneMain sceneMain = new SceneMain(primaryStage, screenWidth, screenHeight);
+                sceneMain.show();
+            }
+        }else{
             emailField.getStyleClass().add("error");
             passwordField.getStyleClass().add("error");
             emailField.clear();
             passwordField.clear();
             emailField.setPromptText("Login failed, try again");
             passwordField.setPromptText("Login failed, try again");
-        } else {
-            System.out.println(App.loggedUser.getUsername() + " Berhasil Login");
-            emailField.clear();
-            passwordField.clear();
-            SceneMain sceneMain = new SceneMain(primaryStage, screenWidth, screenHeight);
-            sceneMain.show();
         }
         emailField.setOnKeyTyped(event -> emailField.getStyleClass().remove("error"));
         passwordField.setOnKeyTyped(event -> passwordField.getStyleClass().remove("error"));
