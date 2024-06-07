@@ -40,7 +40,7 @@ public class SelfUtils {
     }
 
     public static boolean isValidEmail(String email) {
-        String emailPattern = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
+        String emailPattern = "^[\\w-\\.]+@gmail\\.com$";
         Pattern pattern = Pattern.compile(emailPattern);
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
