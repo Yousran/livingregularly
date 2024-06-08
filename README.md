@@ -31,8 +31,8 @@ Banyak catatan yang diperlukan dalam pembuatan sebuah proyek, karena itu kami me
 
 ### 3. Alasan Pemilihan Projek ini
 Proyek ini dipilih karena :
-  Kebutuhan Nyata : Banyak orang kesulitan memprediksi dan mengatur waktu untuk menyelesaikan proyek, sehingga kali mengakibatkan keterlambatan dengan pengeluaran yang tidak terkontrol dapat menyebabkan kekurangan dana di tengah proyek.
-  Penggunaan Yang Luas : Dapat menjadi alat yang sangat berguna bagi individu, tim kecil, dan freelancers dalam mengelola proyek.
+1. Kebutuhan Nyata : Banyak orang kesulitan memprediksi dan mengatur waktu untuk menyelesaikan proyek, sehingga kali mengakibatkan keterlambatan dengan pengeluaran yang tidak terkontrol dapat menyebabkan kekurangan dana di tengah proyek.
+2. Penggunaan Yang Luas : Dapat menjadi alat yang sangat berguna bagi individu, tim kecil, dan freelancers dalam mengelola proyek.
 
 ## Fitur Aplikasi
 A. General
