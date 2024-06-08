@@ -3,21 +3,20 @@ package timetuner.controllers;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import timetuner.App;
 import timetuner.config.DbConnect;
 import timetuner.models.User;
 
-public class UserController extends DbConnect{
+public class UserController extends DbConnect {
 
-    public static boolean register(String username, String email, String password, String profil_path){
-        String query = "INSERT INTO user (username, email, password, profil_path) VALUES (?, ?, ?, ?) ";
+    public static boolean register(String username, String email, String password, String profil_path) {
+        String query = "INSERT INTO user (username, email, password, profil_path) VALUES (?, ?, ?, ?)";
 
         try {
             getConnection();
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, username);
-            preparedStatement.setString(2, email);
+            preparedStatement.setString(2, email.toLowerCase());
             preparedStatement.setString(3, password);
             preparedStatement.setString(4, profil_path);
 
@@ -29,7 +28,7 @@ public class UserController extends DbConnect{
 
         return false;
     }
-    
+
     public static boolean login(String email, String password) {
         if (App.loggedUser != null) {
             return false;
@@ -38,7 +37,7 @@ public class UserController extends DbConnect{
         try {
             getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, email);
+            preparedStatement.setString(1, email.toLowerCase());
             preparedStatement.setString(2, password);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
@@ -56,20 +55,34 @@ public class UserController extends DbConnect{
         return false;
     }
 
-    public static boolean cekEmail(String email){
-        query = "SELECT email FROM user WHERE email=?";
+    public static boolean cekEmail(String email) {
+        String query = "SELECT email FROM user WHERE email=?";
         try {
             getConnection();
             preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, email);
+            preparedStatement.setString(1, email.toLowerCase());
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                boolean valid = resultSet.next();
-                return valid;
+                return resultSet.next();
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
         }
+        return false;
+    }
+
+    public static boolean isUsernameTaken(String username) {
+        String query = "SELECT username FROM user WHERE username=?";
+        try {
+            getConnection();
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, username);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                return resultSet.next();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public static User getUser(int id) {
@@ -123,5 +136,5 @@ public class UserController extends DbConnect{
             }
         }
         return null;
-    }    
+    }
 }

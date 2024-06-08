@@ -1,7 +1,6 @@
 package timetuner.views;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javafx.scene.control.Button;
 import javafx.scene.control.DateCell;
@@ -17,7 +16,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import javafx.util.StringConverter;
 import timetuner.SelfUtils;
 import timetuner.controllers.BudgetController;
 import timetuner.controllers.ProjectController;

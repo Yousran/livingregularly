@@ -19,10 +19,10 @@ public class App extends Application {
     //NOTE: budget tidak bisa negative
     //NOTE: due date tidak boleh lewat dari sekarang
     //NOTE: edit project name,due date, dan budget
-    //TODO: register, email harus pake lower case
-    //TODO: username dan password berikan batasan 12 huruf
-    //TODO: validasi username tidak boleh sama dengan yang sudah ada
-    //TODO: saat project list kosong akan memberikan pesan
+    //NOTE: register, email harus pake lower case
+    //NOTE: username berikan batasan 12 huruf
+    //NOTE: validasi username tidak boleh sama dengan yang sudah ada
+    //NOTE: saat project list kosong akan memberikan pesan
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setResizable(true);
