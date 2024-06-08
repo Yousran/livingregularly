@@ -96,4 +96,27 @@ public class ProjectController extends DbConnect{
         }
         return projects;
     }
+
+    public static boolean updateProject(int id, String project_name, String due_date, int budget) {
+        String query = "UPDATE project SET project_name = ?, due_date = ?, budget = ? WHERE id = ?";
+        try {
+            getConnection();
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, project_name);
+            preparedStatement.setString(2, due_date);
+            preparedStatement.setInt(3, budget);
+            preparedStatement.setInt(4, id);
+            int affectedRows = preparedStatement.executeUpdate();
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                if (preparedStatement != null) preparedStatement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

@@ -3,6 +3,7 @@ package timetuner.views;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import javafx.scene.control.Button;
+import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -10,6 +11,7 @@ import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
@@ -27,7 +29,7 @@ import timetuner.models.User;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PageAddProject extends VBox implements InterfacePageProject  {
+public class PageAddProject extends VBox implements InterfacePageProject {
     VBox budgetListVBox = new VBox();
     VBox teamListVBox = new VBox();
     Label remainingBudget;
@@ -49,13 +51,13 @@ public class PageAddProject extends VBox implements InterfacePageProject  {
         HBox hBox = new HBox();
         VBox vBox = new VBox(projectStatus(), budgetStatus());
         vBox.setStyle("-fx-spacing: 1em;");
-    
+
         vBox.prefWidthProperty().bind(hBox.widthProperty().multiply(0.70));
         teamStatus().prefWidthProperty().bind(hBox.widthProperty().multiply(0.30));
-    
+
         hBox.getStyleClass().add("container");
         hBox.getChildren().addAll(vBox, teamStatus());
-    
+
         Label subTitleAddNewProject = new Label("Add New Project");
         subTitleAddNewProject.getStyleClass().add("h3");
         Button saveButton = new Button("Save");
@@ -67,12 +69,39 @@ public class PageAddProject extends VBox implements InterfacePageProject  {
 
         HBox subTitle = new HBox(subTitleAddNewProject, spacer, saveButton);
         subTitle.getStyleClass().add("container");
-    
+
         this.getChildren().addAll(subTitle, hBox);
+
+        field_total_budget.addEventFilter(KeyEvent.KEY_TYPED, this::validateTotalBudgetField);
+
+        field_due_date.setDayCellFactory(picker -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                if (date.isBefore(LocalDate.now())) {
+                    setDisable(true);
+                    setStyle("-fx-background-color: #ffc0cb;");
+                }
+            }
+        });
     }
-    
+
+    private void validateTotalBudgetField(KeyEvent event) {
+        String input = event.getCharacter();
+        if (!input.matches("[0-9]")) {
+            event.consume();
+        }
+        String currentText = field_total_budget.getText() + input;
+        try {
+            if (Integer.parseInt(currentText) < 0) {
+                event.consume();
+            }
+        } catch (NumberFormatException e) {
+        }
+    }
+
     @Override
-    public HBox projectStatus(){
+    public HBox projectStatus() {
         HBox hbox = new HBox(10);
         hbox.getStyleClass().add("card");
 
@@ -148,7 +177,7 @@ public class PageAddProject extends VBox implements InterfacePageProject  {
     }
 
     @Override
-    public VBox budgetStatus(){
+    public VBox budgetStatus() {
         VBox budgetStatus = new VBox();
         budgetStatus.getStyleClass().add("card");
         field_total_budget.setPromptText("Total Budget");
@@ -185,7 +214,7 @@ public class PageAddProject extends VBox implements InterfacePageProject  {
     }
 
     @Override
-    public VBox teamList(){
+    public VBox teamList() {
         teamListVBox.getChildren().clear();
 
         for (User user : users) {
@@ -195,7 +224,7 @@ public class PageAddProject extends VBox implements InterfacePageProject  {
     }
 
     @Override
-    public HBox teamMember(User user){
+    public HBox teamMember(User user) {
         HBox teamMember = new HBox();
         teamMember.getStyleClass().add("container");
 
@@ -209,7 +238,7 @@ public class PageAddProject extends VBox implements InterfacePageProject  {
             deleteBtn.setGraphic(deleteImageView);
             deleteBtn.setOnAction(event -> deleteTeamMemberHandler(user));
             teamMember.getChildren().add(deleteBtn);
-        }else{
+        } else {
             Button deleteBtn = new Button();
             deleteBtn.getStyleClass().add("btn-icon");
             Image deleteImage = new Image(getClass().getResourceAsStream("/icons/user-circle-regular-240.png"));
@@ -230,7 +259,7 @@ public class PageAddProject extends VBox implements InterfacePageProject  {
     }
 
     @Override
-    public VBox budgetList(){
+    public VBox budgetList() {
         budgetListVBox.getChildren().clear();
 
         for (Budget budget : budgets) {
@@ -239,7 +268,7 @@ public class PageAddProject extends VBox implements InterfacePageProject  {
         return budgetListVBox;
     }
 
-    public HBox budgetItem(Budget budget){
+    public HBox budgetItem(Budget budget) {
         HBox budgetItem = new HBox();
         budgetItem.getStyleClass().add("container");
 
@@ -311,20 +340,26 @@ public class PageAddProject extends VBox implements InterfacePageProject  {
 
     public void addNewBudgetHandler() {
         boolean isEmptyField = false;
-    
+
         if (budgetNameField.getText().isEmpty()) {
             budgetNameField.getStyleClass().add("error");
             budgetNameField.setPromptText("Budget name is required");
             isEmptyField = true;
         }
-    
+
         if (budgetPriceField.getText().isEmpty()) {
             budgetPriceField.getStyleClass().add("error");
             budgetPriceField.setPromptText("Budget price is required");
             isEmptyField = true;
         } else {
             try {
-                Integer.parseInt(budgetPriceField.getText());
+                int budgetPrice = Integer.parseInt(budgetPriceField.getText());
+                if (budgetPrice < 0) {
+                    budgetPriceField.getStyleClass().add("error");
+                    budgetPriceField.clear();
+                    budgetPriceField.setPromptText("Cannot be negative");
+                    isEmptyField = true;
+                }
             } catch (NumberFormatException e) {
                 budgetPriceField.getStyleClass().add("error");
                 budgetPriceField.clear();
@@ -332,7 +367,7 @@ public class PageAddProject extends VBox implements InterfacePageProject  {
                 isEmptyField = true;
             }
         }
-    
+
         if (isEmptyField) {
             budgetNameField.setOnKeyTyped(event -> budgetNameField.getStyleClass().remove("error"));
             budgetPriceField.setOnKeyTyped(event -> budgetPriceField.getStyleClass().remove("error"));
@@ -341,12 +376,12 @@ public class PageAddProject extends VBox implements InterfacePageProject  {
         Budget newBudget = new Budget(0, 0, budgetNameField.getText(), Integer.parseInt(budgetPriceField.getText()));
         budgets.add(newBudget);
         refreshBudgetList();
-    
+
         budgetNameField.setText("");
         budgetPriceField.setText("");
         budgetNameField.clear();
         budgetPriceField.clear();
-    } 
+    }
 
     public void editBudgetHandler(Budget budget, HBox budgetItem) {
         TextField editNameField = new TextField(budget.getBudget_name());
@@ -364,6 +399,12 @@ public class PageAddProject extends VBox implements InterfacePageProject  {
         int newPrice;
         try {
             newPrice = Integer.parseInt(editPriceField.getText());
+            if (newPrice < 0) {
+                editPriceField.getStyleClass().add("error");
+                editPriceField.setPromptText("Cannot be negative");
+                editPriceField.setOnKeyTyped(event -> editPriceField.getStyleClass().remove("error"));
+                return;
+            }
         } catch (NumberFormatException e) {
             editPriceField.getStyleClass().add("error");
             editPriceField.setPromptText("Must be a number");
@@ -395,27 +436,38 @@ public class PageAddProject extends VBox implements InterfacePageProject  {
     private void saveBtnHandler() {
         boolean isEmptyField = false;
         boolean isWrongDataType = false;
-    
+
         if (field_project_name.getText().isEmpty()) {
             field_project_name.getStyleClass().add("error");
             field_project_name.setPromptText("Project name is required");
             isEmptyField = true;
         }
-    
+
         if (field_due_date.getValue() == null || field_due_date.getEditor() == null) {
             field_due_date.getStyleClass().add("error");
             field_due_date.getEditor().clear();
             field_due_date.setPromptText("Due date is required");
             isEmptyField = true;
+        } else if (field_due_date.getValue().isBefore(LocalDate.now())) {
+            field_due_date.getStyleClass().add("error");
+            field_due_date.getEditor().clear();
+            field_due_date.setPromptText("Cannot be in the past");
+            isEmptyField = true;
         }
-    
+
         if (field_total_budget.getText().isEmpty()) {
             field_total_budget.getStyleClass().add("error");
             field_total_budget.setPromptText("Budget is required");
             isEmptyField = true;
         } else {
             try {
-                Integer.parseInt(field_total_budget.getText());
+                int totalBudget = Integer.parseInt(field_total_budget.getText());
+                if (totalBudget < 0) {
+                    field_total_budget.getStyleClass().add("error");
+                    field_total_budget.clear();
+                    field_total_budget.setPromptText("Cannot be negative");
+                    isEmptyField = true;
+                }
             } catch (NumberFormatException e) {
                 field_total_budget.getStyleClass().add("error");
                 field_total_budget.clear();
@@ -423,17 +475,18 @@ public class PageAddProject extends VBox implements InterfacePageProject  {
                 isEmptyField = true;
             }
         }
-    
+
         if (isEmptyField || isWrongDataType) {
             field_project_name.setOnKeyTyped(event -> field_project_name.getStyleClass().remove("error"));
+            field_due_date.setOnKeyTyped(event -> field_due_date.getStyleClass().remove("error"));
             field_total_budget.setOnKeyTyped(event -> field_total_budget.getStyleClass().remove("error"));
             return;
         }
-    
+
         project_name = field_project_name.getText();
         due_date = field_due_date.getValue().format(formatter);
         project_budget = Integer.parseInt(field_total_budget.getText());
-    
+
         Project newProject = ProjectController.addProject(project_name, due_date, project_budget, null);
         if (newProject != null) {
             for (Budget budget : budgets) {
@@ -458,8 +511,8 @@ public class PageAddProject extends VBox implements InterfacePageProject  {
             field_total_budget.clear();
             field_total_budget.setPromptText("Add Project Failed");
         }
-    }    
-    
+    }
+
     private void clearFields() {
         budgets.clear();
         users.clear();

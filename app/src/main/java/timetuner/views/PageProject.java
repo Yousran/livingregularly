@@ -1,19 +1,26 @@
 package timetuner.views;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javafx.scene.control.Button;
+import javafx.scene.control.DateCell;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.util.StringConverter;
 import timetuner.SelfUtils;
 import timetuner.controllers.BudgetController;
+import timetuner.controllers.ProjectController;
 import timetuner.controllers.TeamMemberController;
 import timetuner.controllers.UserController;
 import timetuner.models.Budget;
@@ -29,6 +36,10 @@ public class PageProject extends VBox implements InterfacePageProject {
     TextField usernameField = new TextField();
     TextField budgetNameField = new TextField();
     TextField budgetPriceField = new TextField();
+    TextField editProjectNameField = new TextField();
+    DatePicker editDueDatePicker = new DatePicker();
+    TextField editTotalBudgetField = new TextField();
+    boolean isEditMode = false;
 
     public PageProject(Project project) {
         super();
@@ -44,13 +55,99 @@ public class PageProject extends VBox implements InterfacePageProject {
         hBox.getStyleClass().add("container");
         hBox.getChildren().addAll(vBox, teamStatus());
 
-        Label subTitleAddNewProject = new Label("Detail Project");
-        subTitleAddNewProject.getStyleClass().add("h3");
+        Label subTitleLabel = new Label("Detail Project");
+        subTitleLabel.getStyleClass().add("h3");
 
-        HBox subTitle = new HBox(subTitleAddNewProject);
+        Button toggleEditButton = new Button("Edit");
+        toggleEditButton.getStyleClass().add("btn");
+        toggleEditButton.setOnAction(event -> toggleEditMode(toggleEditButton));
+
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
+        HBox subTitle = new HBox(subTitleLabel, spacer, toggleEditButton);
         subTitle.getStyleClass().add("container");
 
         this.getChildren().addAll(subTitle, hBox);
+
+        editTotalBudgetField.addEventFilter(KeyEvent.KEY_TYPED, this::validateTotalBudgetField);
+        editDueDatePicker.setDayCellFactory(picker -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                if (date.isBefore(LocalDate.now())) {
+                    setDisable(true);
+                    setStyle("-fx-background-color: #ffc0cb;");
+                }
+            }
+        });
+    }
+
+    private void toggleEditMode(Button toggleEditButton) {
+        isEditMode = !isEditMode;
+        if (isEditMode) {
+            toggleEditButton.setText("Save");
+            enableEditing(true);
+        } else {
+            toggleEditButton.setText("Edit");
+            saveProjectDetails();
+            enableEditing(false);
+        }
+    }
+
+    private void enableEditing(boolean enable) {
+        this.getChildren().clear();
+
+        Label subTitleLabel = new Label("Detail Project");
+        subTitleLabel.getStyleClass().add("h3");
+
+        Button toggleEditButton = new Button(enable ? "Save" : "Edit");
+        toggleEditButton.getStyleClass().add("btn");
+        toggleEditButton.setOnAction(event -> toggleEditMode(toggleEditButton));
+
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
+        HBox subTitle = new HBox(subTitleLabel, spacer, toggleEditButton);
+        subTitle.getStyleClass().add("container");
+
+        this.getChildren().add(subTitle);
+
+        HBox hBox = new HBox();
+        VBox vBox = new VBox(enable ? projectEditFields() : projectStatus(), budgetStatus());
+        vBox.setStyle("-fx-spacing: 1em;");
+
+        vBox.prefWidthProperty().bind(hBox.widthProperty().multiply(0.70));
+        teamStatus().prefWidthProperty().bind(hBox.widthProperty().multiply(0.30));
+
+        hBox.getStyleClass().add("container");
+        hBox.getChildren().addAll(vBox, teamStatus());
+
+        this.getChildren().add(hBox);
+    }
+
+    private HBox projectEditFields() {
+        HBox hbox = new HBox(10);
+        hbox.getStyleClass().add("card");
+
+        editProjectNameField.setText(project.getProject_name());
+        editDueDatePicker.setValue(LocalDate.parse(project.getDue_date()));
+        editTotalBudgetField.setText(String.valueOf(project.getBudget()));
+
+        Label labelProjectName = new Label("Project Name");
+        labelProjectName.getStyleClass().add("h5");
+        VBox vboxName = new VBox(labelProjectName, editProjectNameField);
+
+        Label labelDueDate = new Label("Due Date");
+        labelDueDate.getStyleClass().add("h5");
+        VBox vboxDueDate = new VBox(labelDueDate, editDueDatePicker);
+
+        Label labelTotalBudget = new Label("Total Budget");
+        labelTotalBudget.getStyleClass().add("h5");
+        VBox vboxTotalBudget = new VBox(labelTotalBudget, editTotalBudgetField);
+
+        hbox.getChildren().addAll(vboxName, vboxDueDate, vboxTotalBudget);
+        return hbox;
     }
 
     @Override
@@ -159,7 +256,7 @@ public class PageProject extends VBox implements InterfacePageProject {
             deleteBtn.setGraphic(deleteImageView);
             deleteBtn.setOnAction(event -> deleteTeamMemberHandler(user));
             teamMember.getChildren().add(deleteBtn);
-        }else{
+        } else {
             Button deleteBtn = new Button();
             deleteBtn.getStyleClass().add("btn-icon");
             Image deleteImage = new Image(getClass().getResourceAsStream("/icons/user-circle-regular-240.png"));
@@ -357,5 +454,60 @@ public class PageProject extends VBox implements InterfacePageProject {
     private void deleteTeamMemberHandler(User user) {
         TeamMemberController.deleteMember(project.getId(), user.getId());
         refreshTeamList();
+    }
+
+    private void saveProjectDetails() {
+        project.setProject_name(editProjectNameField.getText());
+        project.setDue_date(editDueDatePicker.getValue().toString());
+        project.setBudget(Integer.parseInt(editTotalBudgetField.getText()));
+
+        ProjectController.updateProject(project.getId(), project.getProject_name(), project.getDue_date(), project.getBudget());
+
+        refreshProjectView();
+    }
+
+    private void refreshProjectView() {
+        this.getChildren().clear();
+
+        Label subTitleLabel = new Label("Detail Project");
+        subTitleLabel.getStyleClass().add("h3");
+
+        Button toggleEditButton = new Button("Edit");
+        toggleEditButton.getStyleClass().add("btn");
+        toggleEditButton.setOnAction(event -> toggleEditMode(toggleEditButton));
+
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
+        HBox subTitle = new HBox(subTitleLabel, spacer, toggleEditButton);
+        subTitle.getStyleClass().add("container");
+
+        this.getChildren().add(subTitle);
+
+        HBox hBox = new HBox();
+        VBox vBox = new VBox(projectStatus(), budgetStatus());
+        vBox.setStyle("-fx-spacing: 1em;");
+
+        vBox.prefWidthProperty().bind(hBox.widthProperty().multiply(0.70));
+        teamStatus().prefWidthProperty().bind(hBox.widthProperty().multiply(0.30));
+
+        hBox.getStyleClass().add("container");
+        hBox.getChildren().addAll(vBox, teamStatus());
+
+        this.getChildren().add(hBox);
+    }
+
+    private void validateTotalBudgetField(KeyEvent event) {
+        String input = event.getCharacter();
+        if (!input.matches("[0-9]")) {
+            event.consume();
+        }
+        String currentText = editTotalBudgetField.getText() + input;
+        try {
+            if (Integer.parseInt(currentText) < 0) {
+                event.consume();
+            }
+        } catch (NumberFormatException e) {
+        }
     }
 }
