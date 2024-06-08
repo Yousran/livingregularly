@@ -49,5 +49,38 @@ public class TeamMemberController extends DbConnect{
             return false;
         }
     }
+
+    public static boolean deleteMember(int project_id, int user_id) {
+        String query = "DELETE FROM team_members WHERE project_id = ? AND user_id = ?";
+        try {
+            getConnection();
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, project_id);
+            preparedStatement.setInt(2, user_id);
+            int affectedRows = preparedStatement.executeUpdate();
+            return affectedRows > 0;
+        } catch (Exception e) {
+            System.err.println("Error deleting member: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public static boolean isMemberExists(int project_id, int user_id) {
+        String query = "SELECT COUNT(*) FROM team_members WHERE project_id = ? AND user_id = ?";
+        try {
+            getConnection();
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, project_id);
+            preparedStatement.setInt(2, user_id);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
     
 }

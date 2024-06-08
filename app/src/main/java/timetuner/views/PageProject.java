@@ -1,9 +1,10 @@
 package timetuner.views;
 
-
 import java.util.List;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -18,8 +19,9 @@ import timetuner.controllers.UserController;
 import timetuner.models.Budget;
 import timetuner.models.Project;
 import timetuner.models.User;
+import timetuner.App;
 
-public class PageProject extends VBox implements InterfacePageProject{
+public class PageProject extends VBox implements InterfacePageProject {
     Project project;
     VBox budgetListVBox = new VBox();
     VBox teamListVBox = new VBox();
@@ -28,7 +30,7 @@ public class PageProject extends VBox implements InterfacePageProject{
     TextField budgetNameField = new TextField();
     TextField budgetPriceField = new TextField();
 
-    public PageProject(Project project){
+    public PageProject(Project project) {
         super();
         this.project = project;
         HBox hBox = new HBox();
@@ -38,7 +40,7 @@ public class PageProject extends VBox implements InterfacePageProject{
 
         vBox.prefWidthProperty().bind(hBox.widthProperty().multiply(0.70));
         teamStatus().prefWidthProperty().bind(hBox.widthProperty().multiply(0.30));
-    
+
         hBox.getStyleClass().add("container");
         hBox.getChildren().addAll(vBox, teamStatus());
 
@@ -84,7 +86,16 @@ public class PageProject extends VBox implements InterfacePageProject{
         addMemberBtn.setOnAction(event -> addNewTeamMember());
 
         HBox field = new HBox(addMemberBtn, usernameField);
-        teamStatus.getChildren().addAll(subTitleLabel, field, teamList());
+
+        teamList().setStyle("-fx-background-color:-color-card;");
+        ScrollPane scrollPane = new ScrollPane(teamList());
+        scrollPane.setStyle("-fx-background-color:transparent;");
+        scrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
+        scrollPane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setFitToHeight(true);
+
+        teamStatus.getChildren().addAll(subTitleLabel, field, scrollPane);
         return teamStatus;
     }
 
@@ -112,7 +123,15 @@ public class PageProject extends VBox implements InterfacePageProject{
         HBox addBudget = new HBox(addBudgetBtn, budgetNameField, budgetPriceField);
         remainingBudget = new Label("Remaining Budget : " + SelfUtils.intToRupiah(SelfUtils.calculateBudget(project.getBudget(), BudgetController.getBudgets(project.getId()))));
 
-        budgetStatus.getChildren().addAll(headHBox, addBudget, budgetList(), remainingBudget);
+        budgetList().setStyle("-fx-background-color:-color-card;");
+        ScrollPane scrollPane = new ScrollPane(budgetList());
+        scrollPane.setStyle("-fx-background-color:transparent;");
+        scrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
+        scrollPane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setFitToHeight(true);
+
+        budgetStatus.getChildren().addAll(headHBox, addBudget, scrollPane, remainingBudget);
         return budgetStatus;
     }
 
@@ -128,14 +147,35 @@ public class PageProject extends VBox implements InterfacePageProject{
 
     @Override
     public HBox teamMember(User user) {
-        Image image = new Image(getClass().getResourceAsStream("/icons/user-circle-regular-240.png"));
-        ImageView imageView = new ImageView(image);
-        imageView.setFitWidth(20);
-        imageView.setFitHeight(20);
+        HBox teamMember = new HBox();
+        teamMember.getStyleClass().add("container");
+        if (!user.getUsername().equals(App.loggedUser.getUsername())) {
+            Button deleteBtn = new Button();
+            deleteBtn.getStyleClass().add("btn-icon");
+            Image deleteImage = new Image(getClass().getResourceAsStream("/icons/minus-circle-regular-240.png"));
+            ImageView deleteImageView = new ImageView(deleteImage);
+            deleteImageView.setFitWidth(20);
+            deleteImageView.setFitHeight(20);
+            deleteBtn.setGraphic(deleteImageView);
+            deleteBtn.setOnAction(event -> deleteTeamMemberHandler(user));
+            teamMember.getChildren().add(deleteBtn);
+        }else{
+            Button deleteBtn = new Button();
+            deleteBtn.getStyleClass().add("btn-icon");
+            Image deleteImage = new Image(getClass().getResourceAsStream("/icons/user-circle-regular-240.png"));
+            ImageView deleteImageView = new ImageView(deleteImage);
+            deleteImageView.setFitWidth(20);
+            deleteImageView.setFitHeight(20);
+            deleteBtn.setGraphic(deleteImageView);
+            teamMember.getChildren().add(deleteBtn);
+        }
+
         Label username = new Label(user.getUsername());
         username.getStyleClass().add("h5");
-        HBox teamMember = new HBox(imageView, username);
-        teamMember.getStyleClass().add("container");
+
+        HBox.setHgrow(username, Priority.ALWAYS);
+
+        teamMember.getChildren().add(username);
         return teamMember;
     }
 
@@ -144,11 +184,40 @@ public class PageProject extends VBox implements InterfacePageProject{
         budgetListVBox.getChildren().clear();
         List<Budget> budgets = BudgetController.getBudgets(project.getId());
         for (Budget budget : budgets) {
-            Label budgetLabel = new Label(budget.getBudget_name() + " : " + SelfUtils.intToRupiah(budget.getPrice()));
-            budgetLabel.getStyleClass().add("h5-thin");
-            budgetListVBox.getChildren().add(budgetLabel);
+            budgetListVBox.getChildren().add(budgetItem(budget));
         }
         return budgetListVBox;
+    }
+
+    public HBox budgetItem(Budget budget) {
+        HBox budgetItem = new HBox();
+        budgetItem.getStyleClass().add("container");
+
+        Button editBtn = new Button();
+        editBtn.getStyleClass().add("btn-icon");
+        Image editImage = new Image(getClass().getResourceAsStream("/icons/calendar-edit-regular-240.png"));
+        ImageView editImageView = new ImageView(editImage);
+        editImageView.setFitWidth(20);
+        editImageView.setFitHeight(20);
+        editBtn.setGraphic(editImageView);
+        editBtn.setOnAction(event -> editBudgetHandler(budget, budgetItem));
+
+        Button deleteBtn = new Button();
+        deleteBtn.getStyleClass().add("btn-icon");
+        Image deleteImage = new Image(getClass().getResourceAsStream("/icons/minus-circle-regular-240.png"));
+        ImageView deleteImageView = new ImageView(deleteImage);
+        deleteImageView.setFitWidth(20);
+        deleteImageView.setFitHeight(20);
+        deleteBtn.setGraphic(deleteImageView);
+        deleteBtn.setOnAction(event -> deleteBudgetHandler(budget));
+
+        Label budgetLabel = new Label(budget.getBudget_name() + " : " + SelfUtils.intToRupiah(budget.getPrice()));
+        budgetLabel.getStyleClass().add("h5-thin");
+
+        HBox.setHgrow(budgetLabel, Priority.ALWAYS);
+
+        budgetItem.getChildren().addAll(editBtn, deleteBtn, budgetLabel);
+        return budgetItem;
     }
 
     @Override
@@ -164,6 +233,13 @@ public class PageProject extends VBox implements InterfacePageProject{
 
         User user = UserController.findUser(username);
         if (user != null) {
+            if (TeamMemberController.isMemberExists(project.getId(), user.getId())) {
+                usernameField.clear();
+                usernameField.getStyleClass().add("error");
+                usernameField.setPromptText("User already in team");
+                usernameField.setOnKeyTyped(event -> usernameField.getStyleClass().remove("error"));
+                return;
+            }
             TeamMemberController.addMember(project.getId(), user.getId());
             refreshTeamList();
         } else {
@@ -244,4 +320,42 @@ public class PageProject extends VBox implements InterfacePageProject{
         return hbox;
     }
 
+    private void editBudgetHandler(Budget budget, HBox budgetItem) {
+        TextField editNameField = new TextField(budget.getBudget_name());
+        TextField editPriceField = new TextField(String.valueOf(budget.getPrice()));
+        Button saveEditBtn = new Button("Save Edit");
+        saveEditBtn.getStyleClass().add("btn");
+        saveEditBtn.setOnAction(event -> saveEditBudget(budget, editNameField, editPriceField));
+
+        budgetItem.getChildren().clear();
+        budgetItem.getChildren().addAll(editNameField, editPriceField, saveEditBtn);
+    }
+
+    private void saveEditBudget(Budget budget, TextField editNameField, TextField editPriceField) {
+        String newName = editNameField.getText();
+        int newPrice;
+        try {
+            newPrice = Integer.parseInt(editPriceField.getText());
+        } catch (NumberFormatException e) {
+            editPriceField.getStyleClass().add("error");
+            editPriceField.setPromptText("Must be a number");
+            editPriceField.setOnKeyTyped(event -> editPriceField.getStyleClass().remove("error"));
+            return;
+        }
+
+        budget.setBudget_name(newName);
+        budget.setPrice(newPrice);
+        BudgetController.updateBudget(budget.getId(), newName, newPrice);
+        refreshBudgetList();
+    }
+
+    private void deleteBudgetHandler(Budget budget) {
+        BudgetController.deleteBudget(budget.getId());
+        refreshBudgetList();
+    }
+
+    private void deleteTeamMemberHandler(User user) {
+        TeamMemberController.deleteMember(project.getId(), user.getId());
+        refreshTeamList();
+    }
 }

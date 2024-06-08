@@ -101,6 +101,7 @@
 
 .btn-icon {
     -fx-background-color: -color-clear;
+    -fx-padding: 0.1em;
     -fx-border-color: -color-clear;
     -fx-opacity: 0.5;
 }

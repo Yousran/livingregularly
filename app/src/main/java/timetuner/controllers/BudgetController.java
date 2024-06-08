@@ -53,4 +53,44 @@ public class BudgetController extends DbConnect {
             e.printStackTrace();
         }
     }
+
+    public static void updateBudget(int id, String budget_name, int price) {
+        String query = "UPDATE budgets SET budget_name = ?, price = ? WHERE id = ?";
+        
+        try {
+            getConnection();
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, budget_name);
+            preparedStatement.setInt(2, price);
+            preparedStatement.setInt(3, id);
+            int affectedRows = preparedStatement.executeUpdate();
+            if (affectedRows > 0) {
+                System.out.println("Budget updated successfully.");
+            } else {
+                System.out.println("No rows affected.");
+            }
+        } catch (SQLException e) {
+            System.err.println("Error updating budget: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public static void deleteBudget(int id) {
+        String query = "DELETE FROM budgets WHERE id = ?";
+        
+        try {
+            getConnection();
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, id);
+            int affectedRows = preparedStatement.executeUpdate();
+            if (affectedRows > 0) {
+                System.out.println("Budget deleted successfully.");
+            } else {
+                System.out.println("No rows affected.");
+            }
+        } catch (SQLException e) {
+            System.err.println("Error deleting budget: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 }

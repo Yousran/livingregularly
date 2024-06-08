@@ -13,7 +13,16 @@ public class App extends Application {
     public static User loggedUser = null;
     public static String AppName = "Project Management";
     public static String style = "/styles/styles.css";
-    //TODO:remove budget dengan membuat button di samping kiri budget yang akan muncul jika di hover
+    //NOTE: remove budget dengan membuat button di samping kiri budget yang akan muncul jika di hover
+    //NOTE: scroll pane di team member dan budgetlist
+    //NOTE: tambah tim tidak bisa menambah 2 kali username yang sama
+    //TODO: register, email harus pake lower case
+    //TODO: username dan password berikan batasan 12 huruf
+    //TODO: validasi username tidak boleh sama dengan yang sudah ada
+    //TODO: budget tidak bisa negative
+    //TODO: due date tidak boleh lewat dari sekarang
+    //TODO: saat project list kosong akan memberikan pesan
+    //TODO: edit project name,due date, dan budget
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setResizable(true);
